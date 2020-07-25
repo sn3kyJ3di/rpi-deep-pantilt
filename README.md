@@ -1,4 +1,25 @@
-# Raspberry Pi Deep PanTilt
+# Raspberry Pi Deep PanTiltZoom with Arducam Platform
+
+    This is based on Leigh Johnson's Pan Tilt project, but will be using a differnt camera platform.  I will use the Arducam 8mp PTZ with focus which you can
+    find here:  https://www.arducam.com/product/b01678mp-arducam-8mp-pan-tilt-zoom-ptz-camera-for-raspberry-pi/
+    
+    I have removed the code in the manager for the lights, as far as I can tell this setup does not support lights using I2C.  I also have made some adjustments
+    to the PID: 1) I have added some code that disables the integral calculation when the output is outside of the bounds of the camera.  I found that my 
+    Integral value would increase indefinitly if the object left the space.  2) I have added a deadband parameter to the PID that disables the integral 
+    calculation if the error is within +/- the deadband.  I found that my camera would continuely move once it had locked onto the object.  This is normal with a 
+    PID as the output will oscilate around the set point. 3) I added a BIAS value to the PID that will get added in during each execution of the loop.  When I 
+    executed the program, the tilt angle would move to pointing the camera directly up, which made it hard to test as I had to continuely coax it back down. 4) I 
+    will add upper and lower limits to the PID so it can be used for other applications.
+    
+    I have adjusted the "set_servo" function to work with the Arducam controller.
+    
+    I am currently working on the focus and zoom portion of the code that will need to be added.  Arducam provides sample python code but I would like to see 
+    if I can make it work faster/better.  Once I have all of this working well, I plan on adding in some features that would detect an object and snap a picture 
+    of the object and save it to storage.  I would like to explore the option of implementing historical object recognition as well as logging specific object 
+    detections.
+    
+    Thanks to Leigh for this awesome project! I am very new to Python and there is no way I would have been able to do this without her pioneering it first!  I 
+    will upload the changes I have made so far very soon.
 
 [![image](https://img.shields.io/pypi/v/rpi_deep_pantilt.svg)](https://pypi.python.org/pypi/rpi-deep-pantilt)
 
